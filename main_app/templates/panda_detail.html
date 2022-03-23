@@ -1,0 +1,19 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+
+<div>
+  <img src="{{panda.img}}" alt="{{panda.name}}" />
+</div>
+    <h1>{{panda.name}}</h1>
+</div>
+<div>
+    <h3>Age: {{panda.age}}</h3>
+    <h3>Gender: {{panda.gender}}</h3>
+</div>
+<div>
+    <a href="{% url 'panda_update' panda.pk %}">Update</a>
+    <a href="{% url 'panda_delete' panda.pk %}">DELETE</a>
+</div>
+
+{% endblock %}

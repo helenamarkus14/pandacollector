@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form>
+        <div>
+            <!-- searches for the name of the cat -->
+            <input type="text" name="name" placeholder="name"/>
+            <input type="submit" value="Search"/>
+        </div>
+        <!-- this a tag will redirect back to catlist without a query param! be sure to use the "name" you called the route in your main_app/urls.py -->
+        <a href="{% url 'panda-list' %}">Clear Search</a>
+    </form>
+    <h1>{{header}}</h1>
+    {% for panda in pandas %}
+    <img src="{{panda.img}}" alt="{{panda.name}}">
+    <a href="{% url 'panda_detail' panda.pk %}"> 
+        <h3>Name: {{panda.name}}</h3> 
+    </a>
+    
+    <h3>Age: {{panda.age}}</h3>
+    <h3>Gender: {{panda.gender}}</h3>
+    {% endfor %}
+{% endblock %}

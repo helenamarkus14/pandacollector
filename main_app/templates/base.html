@@ -11,8 +11,11 @@
 </head>
 <body>
     <nav>
-        <li>About</li>
-        <li>Home</li>
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/pandas">Pandas</a>  
+        <a href="{% url 'panda_create' %}">Add Panda</a> 
+
 
     </nav>
     {% block content %}
