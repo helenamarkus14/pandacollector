@@ -6,17 +6,23 @@
             <input type="text" name="name" placeholder="name"/>
             <input type="submit" value="Search"/>
         </div>
-        <!-- this a tag will redirect back to catlist without a query param! be sure to use the "name" you called the route in your main_app/urls.py -->
         <a href="{% url 'panda-list' %}">Clear Search</a>
     </form>
     <h1>{{header}}</h1>
     {% for panda in pandas %}
-    <img src="{{panda.img}}" alt="{{panda.name}}">
+    <div class="card border border-5" style="width: 18em; border: 10px solid #c4da3d!important;background: linear-gradient(140deg, #c4da3d 0%, #6e7f0e 69%, #275009 100%); font-family: 'Open Sans', Helvetica, sans-serif;">
+    <img src="{{panda.img}}" class="card-img-top" style="height: auto;" alt="{{panda.name}}">
+    <div class="card-body" style="text-align: center; font-size: 1em;">
     <a href="{% url 'panda_detail' panda.pk %}"> 
-        <h3>Name: {{panda.name}}</h3> 
+        <p class="name" style="color:#3A1C71;">Name: {{panda.name}}</p> 
     </a>
     
-    <h3>Age: {{panda.age}}</h3>
-    <h3>Gender: {{panda.gender}}</h3>
+    <p>Age: {{panda.age}}</p>
+    <p>Gender: {{panda.gender}}</p>
+    <p>Adopted by:
+        <a href="/user/{{ panda.user.username }}">{{ panda.user.username }}</a>
+    </p>
+    </div>
+    </div>
     {% endfor %}
 {% endblock %}

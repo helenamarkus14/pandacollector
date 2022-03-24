@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block conetent %}
+
+<h1>{{ username}}'s Collection</h1>
+
+{% for panda in pands %}
+    <a href="/pandas/{{ panda.id }}">
+        <h3>{{ panda.name }}</h3>
+    </a>
+
+{% endfor %}
+
+{% endblock %}

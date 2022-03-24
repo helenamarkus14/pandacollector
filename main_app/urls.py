@@ -8,5 +8,11 @@ urlpatterns = [
     path('pandas/new/', views.Panda_Create.as_view(), name="panda_create"),
     path('pandas/<int:pk>/', views.Panda_Detail.as_view(), name ="panda_detail"),
     path('panda/<int:pk>/update', views.Panda_Update.as_view(), name = "panda_update"),
-    path('panda/<int:pk>delete', views.Panda_Delete.as_view(), name="panda_delete"), # <- here we have added the new path
+    path('panda/<int:pk>/delete', views.Panda_Delete.as_view(), name="panda_delete"),
+    path('user/<username>/', views.profile, name='profile'), 
+    path('pandatoys/', views.pandatoys_index, name="pandatoys_index"),# <- here we have added the new path
+    path('pandatoys/<int:pandatoy_id>/', views.pandatoys_show, name="pandatoys_show"),# <- here we have added the new path
+    path('pandatoys/create/', views.PandaToyCreate.as_view(), name="pandatoys_create"),# <- here we have added the new path
+    path('pandatoys/<int:pk>/update/', views.PandaToyUpdate.as_view(), name="pandatoys_update"),# <- here we have added the new path
+    path('pandatoys/<int:pk>/delete/', views.PandaToyDelete.as_view(), name="pandatoys_delete"),# <- here we have added the new path
 ]

@@ -1,18 +1,25 @@
 {% extends 'base.html' %} 
 
 {% block content %}
-
-<div>
+<div class="card border border-5" style="width: 18em; border: 10px solid #c4da3d!important;background: linear-gradient(140deg, #c4da3d 0%, #6e7f0e 69%, #275009 100%); font-family: 'Open Sans', Helvetica, sans-serif;">
   <img src="{{panda.img}}" alt="{{panda.name}}" />
+    <p class="pandaname" style="text-align: center; font-size: 1em;">{{panda.name}}</p>
+
+    <div class="card-body" style="text-align: center; font-size: 1em;">
+    <p>Age: {{panda.age}}</p>
+    <p>Gender: {{panda.gender}}</p>
+    <p>Adopted by:
+        <a href="/user/{{ panda.user.username }}">{{ panda.user.username }}</a>
+    </p>
+    {% for pandatoy in panda.pandatoys.all %}
+        <div>{{pandatoy.name}}</div>
+    {% empty %}
+        <div>{{panda.name}} has no toys :(</div>
+    {% endfor %}
 </div>
-    <h1>{{panda.name}}</h1>
 </div>
 <div>
-    <h3>Age: {{panda.age}}</h3>
-    <h3>Gender: {{panda.gender}}</h3>
-</div>
-<div>
-    <a href="{% url 'panda_update' panda.pk %}">Update</a>
+    <a class="bg-danger" href="{% url 'panda_update' panda.pk %}">Update</a>
     <a href="{% url 'panda_delete' panda.pk %}">DELETE</a>
 </div>
 

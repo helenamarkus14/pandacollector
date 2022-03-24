@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Panda Toy Details</h1>
+
+    <div>
+        <div>
+            <h2>{{ pandatoy.name }}</h2>
+            <p>Color: {{ pandatoy.color }}</p>
+            <p>Owned by:</p>
+            {% for panda in pandatoy.panda_set.all %}
+                <p>{{panda.name}}</p>
+            {% empty %}
+                <p>Nobody Has This Toy</p>
+            {% endfor %}
+        </div>
+        <div>
+            <a href="{% url 'pandatoys_update' pandatoy.id %}">Edit</a>
+            <a href="{% url 'pandatoys_delete' pandatoy.id %}">Delete</a>
+        </div>
+    </div>
+
+{% endblock %}

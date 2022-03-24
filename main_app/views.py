@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.views import View # <- View class to handle requests
-from django.http import HttpResponse # <- a class to handle sending a type of response
-from .models import Panda
+from django.http import HttpResponse, HttpResponseRedirect # <- a class to handle sending a type of response
+from .models import Panda, PandaToy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView
 from django.urls import reverse
+from django.contrib.auth.models import User
 # Create your views here.
 
 # Here we will be creating a class called Home and extending it from the View class
@@ -53,25 +54,63 @@ class PandaList(TemplateView):
         return context
 class Panda_Create(CreateView):
     model = Panda
-    fields = ['name', 'img', 'age', 'gender']
+    fields = ['name', 'img', 'age', 'gender', 'user', 'pandatoys']
     template_name = 'panda_create.html'
     # success_url = "/pandas/"
-    def get_success_url(self):
-        return reverse('panda_detail', kwargs={'pk': self.object.pk})
+    # def get_success_url(self):
+    #     return reverse('panda_detail', kwargs={'pk': self.object.pk})
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.user = self.request.user
+        self.object.save()
+        return HttpResponseRedirect('/pandas')
 
 class Panda_Detail(DetailView):
     model = Panda
-    template_name = "panda_detail.html"
+    template_name = 'panda_detail.html'
 
 class Panda_Update(UpdateView):
     model = Panda
-    fields = ['name', 'img', 'age', 'gender']
-    template_name = "panda_update.html"
+    fields = ['name', 'img', 'age', 'gender', 'pandatoys']
+    template_name = 'panda_update.html'
     def get_success_url(self):
         return reverse('panda_detail', kwargs={'pk': self.object.pk})
     # success_url = "/pandas" 
 
 class Panda_Delete(DeleteView):
     model = Panda
-    template_name = "panda_delete.html"
-    success_url = "/pandas/"
+    template_name = 'panda_delete.html'
+    success_url = '/pandas/'
+
+# Profile for the user
+def profile(request, username):
+    user = User.objects.get(username=username)
+    pandas = Panda.objects.filter(user=user)
+    return render(request, 'profile.html', {'username': username, 'pandas': pandas}) 
+
+# Panda toys
+
+def pandatoys_index(request):
+    pandatoys = PandaToy.objects.all()
+    return render(request, 'pandatoy_index.html',{'pandatoys': pandatoys})
+
+def pandatoys_show(request, pandatoy_id):
+    pandatoy = PandaToy.objects.get(id=pandatoy_id)
+    return render(request, 'pandatoy_show.html', {'pandatoy': pandatoy})
+
+class PandaToyCreate(CreateView):
+    model = PandaToy
+    fields = '__all__'
+    template_name = 'pandatoy_form.html'
+    success_url = '/pandatoys/'
+
+class PandaToyUpdate(UpdateView):
+    model = PandaToy
+    fields = ['name', 'color']
+    template_name = 'pandatoy_update.html'
+    success_url = '/pandatoys/'
+
+class PandaToyDelete(DeleteView):
+    model = PandaToy
+    template_name = 'pandatoy_confirm_delete.html'
+    success_url = '/pandatoys/'     
