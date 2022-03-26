@@ -1,8 +1,9 @@
 {% extends 'base.html' %} 
 
 {% block content %}
-<div class="card border border-5" style="width: 18em; border: 10px solid #c4da3d!important;background: linear-gradient(140deg, #c4da3d 0%, #6e7f0e 69%, #275009 100%); font-family: 'Open Sans', Helvetica, sans-serif;">
-  <img src="{{panda.img}}" alt="{{panda.name}}" />
+<div class="d-flex justify-content-center">
+    <div class="card border border-5" style="width: 18em; border: 10px solid #7E9B80!important;background: linear-gradient(140deg, #7E9B80 0%, #687f6a 69%, #275009 100%); font-family: 'Open Sans', Helvetica, sans-serif;">
+  <img src="{{panda.img}}" class="card-img-top" style="height: auto;" alt="{{panda.name}}">
     <p class="pandaname" style="text-align: center; font-size: 1em;">{{panda.name}}</p>
 
     <div class="card-body" style="text-align: center; font-size: 1em;">
@@ -11,16 +12,25 @@
     <p>Adopted by:
         <a href="/user/{{ panda.user.username }}">{{ panda.user.username }}</a>
     </p>
+    {% for pandasnack in panda.pandasnacks.all %}
+        <div>{{pandasnack.name}}</div>
+    {% empty %}
+        <div> Energy: none :(</div>
+    {% endfor %}
+
     {% for pandatoy in panda.pandatoys.all %}
         <div>{{pandatoy.name}}</div>
     {% empty %}
         <div>{{panda.name}} has no toys :(</div>
     {% endfor %}
+    <div>
+        <a href="{% url 'panda_update' panda.pk %}" class="btn btn-info" role="button">Update</a>
+        <a href="{% url 'panda_delete' panda.pk %}" class="btn btn-danger" role="button">DELETE</a>
+    </div>
 </div>
 </div>
-<div>
-    <a class="bg-danger" href="{% url 'panda_update' panda.pk %}">Update</a>
-    <a href="{% url 'panda_delete' panda.pk %}">DELETE</a>
+
 </div>
+
 
 {% endblock %}

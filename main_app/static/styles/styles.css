@@ -1,7 +1,31 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap');
 
+body {
+    background: url('./images/background.png') no-repeat center center fixed;;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+
+}
 h1{
-    color: orange;
+    color: #687f6a;
     font-family: 'Open Sans', sans-serif;
+    text-align: center;
+}
+
+.dropdown {
+    margin-bottom: 10px;
+}
+
+.container-row {
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+
+}
+
+.card {
+    align-items: center;
 }
