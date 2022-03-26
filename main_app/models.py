@@ -8,6 +8,13 @@ class PandaToy(models.Model):
 
     def __str__(self):
         return self.name
+
+class PandaSnack(models.Model):
+    name = models.CharField(max_length=100)
+    energy_increase = models.IntegerField() 
+
+    def __str__(self) -> str:
+        return self.name
         
 GENDER_CHOICES = (
 	("f", "female"),
@@ -22,6 +29,7 @@ class Panda(models.Model):
     gender = models.CharField(max_length=10, choices = GENDER_CHOICES)
     user = models.ForeignKey(User, on_delete=models.CASCADE) #one to many
     pandatoys = models.ManyToManyField(PandaToy) #many to many
+    pandasnacks = models.ManyToManyField(PandaSnack) #many to many
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

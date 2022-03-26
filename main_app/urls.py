@@ -14,5 +14,11 @@ urlpatterns = [
     path('pandatoys/<int:pandatoy_id>/', views.pandatoys_show, name="pandatoys_show"),# <- here we have added the new path
     path('pandatoys/create/', views.PandaToyCreate.as_view(), name="pandatoys_create"),# <- here we have added the new path
     path('pandatoys/<int:pk>/update/', views.PandaToyUpdate.as_view(), name="pandatoys_update"),# <- here we have added the new path
-    path('pandatoys/<int:pk>/delete/', views.PandaToyDelete.as_view(), name="pandatoys_delete"),# <- here we have added the new path
+    path('pandatoys/<int:pk>/delete/', views.PandaToyDelete.as_view(), name="pandatoys_delete"),
+    
+    path('pandasnacks/', views.pandasnacks_index, name="pandasnacks_index"),# <- here we have added the new path
+    path('pandasnacks/<int:pandasnack_id>/', views.pandasnacks_show, name="pandasnacks_show"),# <- here we have added the new path
+    path('pandasnacks/create/', views.PandaSnackCreate.as_view(), name="pandasnacks_create"),# <- here we have added the new path
+    path('pandasnacks/<int:pk>/update/', views.PandaSnackUpdate.as_view(), name="pandasnacks_update"),# <- here we have added the new path
+    path('pandasnacks/<int:pk>/delete/', views.PandaSnackDelete.as_view(), name="pandasnacks_delete"),# <- here we have added the new path
 ]

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Panda Snack Details</h1>
+
+<div>
+    <div>
+        <span>{{ pandasnack.name }}</span>
+        <p>Energy: {{ pandasnack.energy_increase }}</p>
+    </div>
+    <div>
+        <a href="{% url 'pandasnacks_update' pandasnack.id %}">Edit</a>
+        <a href="{% url 'pandasnacks_delete' pandasnack.id %}">Delete</a>
+    </div>
+</div>
+{% endblock %}

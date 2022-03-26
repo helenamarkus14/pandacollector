@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Panda Snack List</h1>
+
+{% for pandasnack in pandasnacks %}
+    <div>
+        <a href="{% url 'pandasnacks_show' pandasnack.id %}">
+            <div class="card-content">
+                <span>{{ pandasnack.name }}</span>
+                <p>Energy: {{ pandasnack.energy_increase }}</p>
+            </div>
+        </a>
+    </div>
+{% endfor %}
+
+{% endblock %}

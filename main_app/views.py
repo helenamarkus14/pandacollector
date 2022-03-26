@@ -1,8 +1,9 @@
+from dataclasses import fields
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.views import View # <- View class to handle requests
 from django.http import HttpResponse, HttpResponseRedirect # <- a class to handle sending a type of response
-from .models import Panda, PandaToy
+from .models import Panda, PandaToy, PandaSnack
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView
 from django.urls import reverse
@@ -54,7 +55,7 @@ class PandaList(TemplateView):
         return context
 class Panda_Create(CreateView):
     model = Panda
-    fields = ['name', 'img', 'age', 'gender', 'user', 'pandatoys']
+    fields = ['name', 'img', 'age', 'gender', 'user', 'pandatoys', 'pandasnacks']
     template_name = 'panda_create.html'
     # success_url = "/pandas/"
     # def get_success_url(self):
@@ -114,3 +115,30 @@ class PandaToyDelete(DeleteView):
     model = PandaToy
     template_name = 'pandatoy_confirm_delete.html'
     success_url = '/pandatoys/'     
+
+# Panda Snacks
+
+def pandasnacks_index(request):
+    pandasnacks = PandaSnack.objects.all()
+    return render(request, 'pandasnack_index.html',{'pandasnacks': pandasnacks})
+
+def pandasnacks_show(request, pandasnack_id):
+    pandasnack = PandaSnack.objects.get(id=pandasnack_id)
+    return render(request, 'pandasnack_show.html', {'pandasnack': pandasnack})
+
+class PandaSnackCreate(CreateView):
+    model = PandaSnack
+    fields = '__all__'
+    template_name = 'pandasnack_form.html'
+    success_url = '/pandasnacks/'
+
+class PandaSnackUpdate(UpdateView):
+    model = PandaSnack
+    fields = '__all__'
+    template_name = 'pandasnack_update.html'
+    success_url = '/pandasnacks/'
+
+class PandaSnackDelete(DeleteView):
+    model = PandaSnack
+    template_name = 'pandasnack_confirm_delete.html'
+    success_url = '/pandasnacks/'    
