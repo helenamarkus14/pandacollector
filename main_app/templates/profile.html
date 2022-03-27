@@ -1,15 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block conetent %}
+{% block content %}
 
+
+{% for panda in pandas %}
 <h1>{{ username}}'s Collection</h1>
-
-{% for panda in pands %}
+<a class="d-flex justify-content-center btn-sm btn-secondary addPanda"  href="{% url 'panda_create' %}">Add Panda</a>
+    <div class="d-flex justify-content-center">
     <a href="/pandas/{{ panda.id }}">
-        <h3>{{ panda.name }}</h3>
+        <div class="pandaList" style="width: auto; border: 5px solid #7E9B80!important;background: linear-gradient(140deg, #7E9B80 0%, #687f6a 69%, #275009 100%); font-family: 'Open Sans', Helvetica, sans-serif; text-align: center;">{{ panda.name }}</div>
     </a>
-
+    </div>  
 {% endfor %}
 
 {% endblock %}

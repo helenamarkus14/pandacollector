@@ -14,18 +14,23 @@ h1{
     font-family: 'Open Sans', sans-serif;
     text-align: center;
 }
+h2 {
+    color: #687f6a;
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
 
+}
 .dropdown {
     margin-bottom: 10px;
 }
 
-.container-row {
+.container-row{
     display: flex;
     flex-direction: row;
     justify-items: center;
 
 }
 
-.card {
+.card{
     align-items: center;
 }

@@ -8,6 +8,12 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView
 from django.urls import reverse
 from django.contrib.auth.models import User
+# Auth imports
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+
 # Create your views here.
 
 # Here we will be creating a class called Home and extending it from the View class
@@ -53,6 +59,8 @@ class PandaList(TemplateView):
             context["pandas"] = Panda.objects.all()
             context['header'] = "Our Pandas" # this is where we add the key into our context object for the view to use
         return context
+# must go above the class        
+@method_decorator(login_required, name='dispatch')        
 class Panda_Create(CreateView):
     model = Panda
     fields = ['name', 'img', 'age', 'gender', 'user', 'pandatoys', 'pandasnacks']
@@ -70,20 +78,23 @@ class Panda_Detail(DetailView):
     model = Panda
     template_name = 'panda_detail.html'
 
+@method_decorator(login_required, name='dispatch') 
 class Panda_Update(UpdateView):
     model = Panda
-    fields = ['name', 'img', 'age', 'gender', 'pandatoys']
+    fields = ['name', 'img', 'age', 'gender', 'pandatoys', 'pandasnacks']
     template_name = 'panda_update.html'
     def get_success_url(self):
         return reverse('panda_detail', kwargs={'pk': self.object.pk})
     # success_url = "/pandas" 
 
+@method_decorator(login_required, name='dispatch') 
 class Panda_Delete(DeleteView):
     model = Panda
     template_name = 'panda_delete.html'
     success_url = '/pandas/'
 
 # Profile for the user
+@login_required
 def profile(request, username):
     user = User.objects.get(username=username)
     pandas = Panda.objects.filter(user=user)
@@ -99,18 +110,21 @@ def pandatoys_show(request, pandatoy_id):
     pandatoy = PandaToy.objects.get(id=pandatoy_id)
     return render(request, 'pandatoy_show.html', {'pandatoy': pandatoy})
 
+@method_decorator(login_required, name='dispatch') 
 class PandaToyCreate(CreateView):
     model = PandaToy
     fields = '__all__'
     template_name = 'pandatoy_form.html'
     success_url = '/pandatoys/'
 
+@method_decorator(login_required, name='dispatch') 
 class PandaToyUpdate(UpdateView):
     model = PandaToy
     fields = ['name', 'color']
     template_name = 'pandatoy_update.html'
     success_url = '/pandatoys/'
 
+@method_decorator(login_required, name='dispatch') 
 class PandaToyDelete(DeleteView):
     model = PandaToy
     template_name = 'pandatoy_confirm_delete.html'
@@ -126,19 +140,65 @@ def pandasnacks_show(request, pandasnack_id):
     pandasnack = PandaSnack.objects.get(id=pandasnack_id)
     return render(request, 'pandasnack_show.html', {'pandasnack': pandasnack})
 
+@method_decorator(login_required, name='dispatch') 
 class PandaSnackCreate(CreateView):
     model = PandaSnack
     fields = '__all__'
     template_name = 'pandasnack_form.html'
     success_url = '/pandasnacks/'
 
+@method_decorator(login_required, name='dispatch') 
 class PandaSnackUpdate(UpdateView):
     model = PandaSnack
     fields = '__all__'
     template_name = 'pandasnack_update.html'
     success_url = '/pandasnacks/'
 
+@method_decorator(login_required, name='dispatch') 
 class PandaSnackDelete(DeleteView):
     model = PandaSnack
     template_name = 'pandasnack_confirm_delete.html'
     success_url = '/pandasnacks/'    
+
+
+# Login, Logout, and SignUp
+
+def login_view(request):
+    # if post, then authenticate (user submitted username and password)
+    if request.method == 'POST':
+        form = AuthenticationForm(request, request.POST)
+        if form.is_valid():
+            u = form.cleaned_data['username']
+            p = form.cleaned_data['password'] 
+            user = authenticate(username = u, password = p)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return HttpResponseRedirect('/user/'+u)
+                else:
+                    print('The account has been disabled.')
+                    # feel free to redirect them somewhere
+            else: 
+                print('The username and/or password is incorrect.')
+    else:
+        form = AuthenticationForm()
+        return render(request, 'login.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect('/pandas')
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            print('Hi', user.username)
+            return HttpResponseRedirect('/user/'+str(user))
+        else:
+            HttpResponse('<h1>Try Again</h1>')    
+    else:
+        form = UserCreationForm()
+        return render(request, 'signup.html', {'form': form})
+        
